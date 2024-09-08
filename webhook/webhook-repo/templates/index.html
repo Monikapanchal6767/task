@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhook Event Viewer</title>
+    <script>
+        function fetchEvents() {
+            fetch('/events')
+                .then(response => response.json())
+                .then(data => {
+                    const eventList = document.getElementById('event-list');
+                    eventList.innerHTML = '';
+
+                    data.events.forEach(event => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${event.author} ${formatAction(event)} on ${event.timestamp}`;
+                        eventList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching events:', error));
+        }
+
+        function formatAction(event) {
+            if (event.action === "PUSH") {
+                return `pushed to ${event.to_branch}`;
+            } else if (event.action === "PULL_REQUEST") {
+                return `submitted a pull request from ${event.from_branch} to ${event.to_branch}`;
+            } else if (event.action === "MERGE") {
+                return `merged branch ${event.from_branch} to ${event.to_branch}`;
+            } else {
+                return '';
+            }
+        }
+
+        // Poll the data every 15 seconds
+        setInterval(fetchEvents, 15000);
+
+        // Fetch data when the page loads
+        window.onload = fetchEvents;
+    </script>
+</head>
+<body>
+    <h1>GitHub Webhook Events</h1>
+    <ul id="event-list">
+        <!-- Event data will be dynamically added here -->
+    </ul>
+</body>
+</html>
