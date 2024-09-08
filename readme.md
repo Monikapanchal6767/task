@@ -1,3 +1,5 @@
+task
+
 creating virtual environment  -
 python -m venv webhook_env
 
@@ -15,7 +17,7 @@ we will make a flask app for webhook -libs -  pip install Flask
 we will use the Dynamic Data Rendering: Based on the event's action (PUSH, PULL_REQUEST, or MERGE), the appropriate text is formatted and appended to the event-list HTML element.
 
 
-testing using curl
+testing using curl(terminal manual testing to check if the push , pull and merge is working)
 '''
 
 push - curl -X POST http://127.0.0.1:5000/webhook -H "Content-Type: application/json" -d "{\"author\": \"Travis\", \"action\": \"PUSH\", \"from_branch\": \"dev\", \"to_branch\": \"main\", \"request_id\": \"123abc\"}"
@@ -39,7 +41,7 @@ then Use curl to send webhook events push,pull,merge (testing using curl)
 
 
 
-mongodb basic commands 
+mongodb basic commands (testing)
 db
 show dbs
 use myDatabase
